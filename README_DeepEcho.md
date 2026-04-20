@@ -1,54 +1,68 @@
-# DeepEcho
+<!--
+Document : README_DeepEcho.md
+Auteur : Bruno DELNOZ
+Email : bruno.delnoz@protonmail.com
+Version : v3.0.0
+Date : 2026-04-20 00:00
+-->
+# DeepEcho Documentation Snapshot
 
-## 🧠 Présentation
+This document aligns with the scripts currently present in the repository and keeps a concise project view.
 
-**DeepEcho** est un outil d’analyse et de transcription automatique de vidéos `.mp4`, basé sur **WhisperCPP**.  
-Il permet de transformer vos enregistrements en texte clair, prêt pour la recherche, la documentation ou l’archivage.
+## Functional Components Present in Repository
 
-## 🚀 Fonctionnalités principales
+1. `install_whisper.sh`
+   - Full install/cleanup/reinstall/test workflow for Python Whisper + `whisper.cpp`.
+2. `transcribe_mp4.2.3.sh`
+   - Single-file and folder transcription.
+   - Optional deep audio diagnostics.
+   - Optional generated-file cleanup.
+3. Historical transcription variants
+   - `transcribe_mp4.v1.7.sh`
+   - `transcribe_mp4.1.9.sh`
+   - `transcribe_mp4.2.1.sh`
+   - `transcribe_mp4.bof.sh`
+4. Embedded `whisper.cpp`
+   - Local source tree used by the transcription toolchain.
 
-- Transcription automatique des fichiers `.mp4`
-- Traitement récursif de dossiers complets
-- Détection de la langue automatique
-- Sauvegarde des transcriptions au format `.txt` ou `.md`
-- Logs détaillés avec statistiques de succès/échec
+## Operational Flow
 
-## ⚙️ Installation
-
-```bash
-git clone https://github.com/votre-nom/DeepEcho.git
-cd DeepEcho
-chmod +x deepecho.sh
-```
-
-## 🧩 Utilisation
-
-```bash
-./deepecho.sh --input /chemin/videos --output /chemin/transcriptions
-```
-
-| Argument | Description |
-|-----------|--------------|
-| `--input` | Fichier ou dossier contenant les `.mp4` |
-| `--output` | Dossier de destination des fichiers texte |
-| `--language` | (Optionnel) Forcer la langue (`fr`, `en`, etc.) |
-| `--verbose` | Active le mode verbeux |
-
-## 🧠 Exemple concret
+1. Run installer:
 
 ```bash
-./deepecho.sh --input ~/Videos/overlook --output ~/Transcripts
+./install_whisper.sh
 ```
 
-Transcrit tous les fichiers `.mp4` du dossier et enregistre les textes dans `~/Transcripts`.
+2. Validate with analyzer mode:
 
-## 🧾 Licence
+```bash
+./transcribe_mp4.2.3.sh --file "/path/video.mp4" --analyze
+```
 
-Ce projet est distribué sous licence MIT.
+3. Execute transcription:
 
----
+```bash
+./transcribe_mp4.2.3.sh --file "/path/video.mp4" --exec
+```
 
-**Auteur :** Bruno Delnoz  
-**Version :** 2.5.0  
-**Nom de code :** DeepEcho  
-**Description :** Transcription WhisperCPP automatisée pour vidéos MP4.
+4. Batch mode:
+
+```bash
+./transcribe_mp4.2.3.sh --folder "/path/videos" --exec
+```
+
+## Important Technical Notes
+
+- Script output formats are controlled by `--output-format`.
+- `--exec` is required to trigger real transcription; otherwise the script stays in simulation/informational mode.
+- Audio analysis mode depends on `ffprobe` and `bc`.
+- Default runtime expects:
+  - `./whisper.cpp/build/bin/whisper-cli`
+  - `./whisper.cpp/models/`
+
+## Documentation Map
+
+- `README.md` → Main project readme.
+- `INSTALL.md` → Installation and validation procedures.
+- `WHY.md` → Design rationale and retained structure.
+- `CHANGELOG.md` → Documentation update history.
